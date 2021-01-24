@@ -1,0 +1,20 @@
+net: "prototxt/animal_classifier/squeeze_net/train.prototxt"
+
+test_initialization: false
+
+base_lr: 0.001
+momentum: 0.9
+weight_decay: 0.0002
+lr_policy: "step"
+gamma: 0.85
+iter_size: 2
+
+stepsize: 5000
+average_loss: 40
+
+display: 40
+max_iter: 170000
+
+snapshot: 5000
+snapshot_prefix: "models/animal_classifier/squeeze_net/squeezenet"
+solver_mode: GPU

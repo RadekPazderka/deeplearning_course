@@ -1,14 +1,14 @@
 import caffe
-
+from ..dataset_fetcher.DataFetcher import DataFetcher
 
 class DatalayerClassifier(caffe.Layer):
 
     def setup(self, bottom, top):
-        self._data_fetcher = None #TODO: here...
+        self._data_fetcher = DataFetcher("datataset")
 
         BATCH_SIZE  = 32
         CHANNELS    = 3
-        IMG_SIZE    = 224
+        IMG_SIZE    = 227
 
         top[0].reshape(BATCH_SIZE, CHANNELS, IMG_SIZE, IMG_SIZE)    # input image
         top[1].reshape(BATCH_SIZE, 1)                               # input label
