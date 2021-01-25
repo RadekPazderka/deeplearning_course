@@ -4,20 +4,21 @@ from ..dataset_fetcher.DataFetcher import DataFetcher
 class DatalayerClassifier(caffe.Layer):
 
     def setup(self, bottom, top):
-        self._data_fetcher = DataFetcher("datataset")
 
         BATCH_SIZE  = 32
         CHANNELS    = 3
         IMG_SIZE    = 227
 
+        self._data_fetcher = DataFetcher("../dataset/data/TRAIN", batch_size=BATCH_SIZE, image_size=IMG_SIZE).run()
+
         top[0].reshape(BATCH_SIZE, CHANNELS, IMG_SIZE, IMG_SIZE)    # input image
         top[1].reshape(BATCH_SIZE, 1)                               # input label
 
     def forward(self, bottom, top):
-        image_blob, label_blob = self._data_fetcher.get_data()
+        blob = self._data_fetcher.get_data_blob()
 
-        top[0].data[...] = image_blob
-        top[1].data[...] = label_blob
+        top[0].data[...] = blob["images"]
+        top[1].data[...] = blob["labels"]
 
 
     def backward(self, top, propagate_down, bottom):
