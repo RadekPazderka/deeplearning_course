@@ -9,12 +9,12 @@ lr_policy: "step"
 gamma: 0.85
 iter_size: 2
 
-stepsize: 5000
+stepsize: 3000
 average_loss: 40
 
 display: 40
-max_iter: 170000
+max_iter: 15000
 
-snapshot: 5000
+snapshot: 1000
 snapshot_prefix: "models/animal_classifier/squeeze_net/squeezenet"
 solver_mode: GPU

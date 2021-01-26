@@ -1,21 +1,11 @@
 import argparse
-
-#from ttictoc import TicToc
-import sys
-
-# import google.protobuf as pb2
-# import google.protobuf.text_format
-#
-# sys.path.insert(0, "../..")
-# sys.path.insert(0, "../detector_3D/lib")
-#
-# from
-# from global_utils.logger_csv import Loss_logger
-# from train.configs.ModulesConfig import TrainConfig, MODULES_CONFIG
+import google.protobuf as pb2
+import google.protobuf.text_format
 from typing import Optional
 
 from .utils.sys_paths import SysPaths
 from .utils.loss_logger import Loss_logger
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Dataset loader server.')
@@ -27,7 +17,7 @@ def parse_args():
 
 class TrainWrapper(object):
 
-    def __init__(self, caffemodel_path: Optional[str], solver_path: str):
+    def __init__(self, solver_path: str, caffemodel_path: Optional[str]):
         import caffe
         from caffe.proto import caffe_pb2
         caffe.set_mode_gpu()
@@ -56,13 +46,13 @@ class TrainWrapper(object):
 if __name__ == '__main__':
     PYTHON_CAFFE_PATH = ""
 
-    SOLVER_PATH = ""
-    CAFFE_MODEL_PATH = ""
+    SOLVER_PATH = "prototxt/animal_classifier/squeeze_net/solver.prototxt"
+    CAFFEMODEL_PATH = "pretrained/squeeze_net/squeezenet_v1.0.caffemodel"
 
     args = parse_args()
     SysPaths.add_path(PYTHON_CAFFE_PATH)
 
-    sw = TrainWrapper(MODULES_CONFIG.train_config)
+    sw = TrainWrapper(SOLVER_PATH, CAFFEMODEL_PATH)
     print('Solving...')
     sw.train_model()
     print('done solving')
