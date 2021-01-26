@@ -1,25 +1,17 @@
-import argparse
 import google.protobuf as pb2
 import google.protobuf.text_format
 from typing import Optional
 
-from .utils.sys_paths import SysPaths
+from .utils import sys_paths
 from .utils.loss_logger import Loss_logger
 
-
-def parse_args():
-    parser = argparse.ArgumentParser(description='Dataset loader server.')
-    parser.add_argument("--config_path", dest="config_path", type=str, help='select configs file from directory configs/')
-
-    args = parser.parse_args()
-    return args
-
+import caffe
+from caffe.proto import caffe_pb2
 
 class TrainWrapper(object):
 
     def __init__(self, solver_path: str, caffemodel_path: Optional[str]):
-        import caffe
-        from caffe.proto import caffe_pb2
+
         caffe.set_mode_gpu()
 
         self._solver = caffe.SGDSolver(solver_path)
@@ -49,7 +41,6 @@ if __name__ == '__main__':
     SOLVER_PATH = "prototxt/animal_classifier/squeeze_net/solver.prototxt"
     CAFFEMODEL_PATH = "pretrained/squeeze_net/squeezenet_v1.0.caffemodel"
 
-    args = parse_args()
     SysPaths.add_path(PYTHON_CAFFE_PATH)
 
     sw = TrainWrapper(SOLVER_PATH, CAFFEMODEL_PATH)
