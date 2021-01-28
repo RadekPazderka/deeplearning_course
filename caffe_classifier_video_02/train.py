@@ -1,6 +1,5 @@
 import google.protobuf as pb2
 import google.protobuf.text_format
-from typing import Optional
 
 from utils import sys_paths
 from utils.loss_logger import Loss_logger
@@ -36,7 +35,6 @@ class TrainWrapper(object):
 
 
 if __name__ == '__main__':
-    PYTHON_CAFFE_PATH = ""
 
     SOLVER_PATH = "prototxt/animal_classifier/squeeze_net/solver.prototxt"
     CAFFEMODEL_PATH = "pretrained/squeeze_net/squeezenet_v1.0.caffemodel"

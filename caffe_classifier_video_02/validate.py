@@ -13,7 +13,7 @@ class ValidateWrapper():
         self._fetcher = DataFetcher("dataset/data/VAL", 227, batch_size=1)
         self._fetcher.run()
         print("Fetching val data...")
-        self._val_data = [self._fetcher.get_data_blob() for _ in range(10)]
+        self._val_data = [self._fetcher.get_data_blob() for _ in range(1000)]
 
     def validate(self):
         result = []
@@ -53,5 +53,6 @@ if __name__ == '__main__':
     DEPLOY_PATH = "prototxt/animal_classifier/squeeze_net/deploy.prototxt"
     CAFFEMODELS_DIR = "models/animal_classifier/squeeze_net/"
 
-    res = ValidateWrapper(DEPLOY_PATH, CAFFEMODELS_DIR).validate()
-    print(res)
+    models_validations = ValidateWrapper(DEPLOY_PATH, CAFFEMODELS_DIR).validate()
+    for model_validation in models_validations:
+        print(model_validation)

@@ -64,7 +64,7 @@ class DatasetBalancer():
     def get_iterator(self):
         while True:
             for dataset_class in self._classes:
-                yield "/home/radekp/PycharmProjects/deeplearning_course/caffe_classifier_video_02/" + self._paths[dataset_class][self._dataset_state[dataset_class]["current_index"]], dataset_class
+                yield self._paths[dataset_class][self._dataset_state[dataset_class]["current_index"]], dataset_class
 
                 self._dataset_state[dataset_class]["current_index"] += 1
                 self._dataset_state[dataset_class]["current_index"] %= self._dataset_state[dataset_class]["max_index"]
