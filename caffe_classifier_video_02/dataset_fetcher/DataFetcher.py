@@ -109,10 +109,4 @@ class Worker():
         self._queue.put(item)
 
 
-if __name__ == '__main__':
-    fetcher = DataFetcher("../dataset/data/TRAIN", 227, 32, 1)
-    fetcher.run()
-
-    data = fetcher.get_data_blob()
-    pass
 

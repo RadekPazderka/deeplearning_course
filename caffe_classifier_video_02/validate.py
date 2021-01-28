@@ -10,7 +10,7 @@ class ValidateWrapper():
 
         self._deploy_path = deploy_path
         self._caffemodels_dir = caffemodels_dir
-        self._fetcher = DataFetcher("dataset/data/VAL", 224, batch_size=1)
+        self._fetcher = DataFetcher("dataset/data/VAL", 227, batch_size=1)
         self._fetcher.run()
         print("Fetching val data...")
         self._val_data = [self._fetcher.get_data_blob() for _ in range(10)]
