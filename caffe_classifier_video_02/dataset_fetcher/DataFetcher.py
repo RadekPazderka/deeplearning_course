@@ -1,11 +1,11 @@
 import os
 from threading import Thread
 from functools import wraps
-import queue
+import Queue
 import cv2
 import numpy as np
 
-from caffe_classifier_video_02.dataset_fetcher.Augmentator import AugmentatorSeq
+# from caffe_classifier_video_02.dataset_fetcher.Augmentator import AugmentatorSeq
 from caffe_classifier_video_02.dataset_fetcher.LabelMapping import LABEL_MAPPING
 
 
@@ -24,7 +24,7 @@ class DataFetcher(object):
         self._image_size = image_size
         self._batch_size = batch_size
         self._async_workers = async_workers
-        self._dataset_queue = queue.Queue(maxsize=100)
+        self._dataset_queue = Queue.Queue(maxsize=100)
 
     @run_async
     def _run_worker(self):
@@ -43,7 +43,7 @@ class DataFetcher(object):
 
 
 class DatasetBalancer():
-    def __init__(self, dataset_path: str):
+    def __init__(self, dataset_path):
         self._dataset_path = dataset_path
         self._paths, self._dataset_state, self._classes = self._load_paths()
 
@@ -64,7 +64,7 @@ class DatasetBalancer():
     def get_iterator(self):
         while True:
             for dataset_class in self._classes:
-                yield self._paths[dataset_class][self._dataset_state[dataset_class]["current_index"]], dataset_class
+                yield "/home/radekp/PycharmProjects/deeplearning_course/caffe_classifier_video_02/" + self._paths[dataset_class][self._dataset_state[dataset_class]["current_index"]], dataset_class
 
                 self._dataset_state[dataset_class]["current_index"] += 1
                 self._dataset_state[dataset_class]["current_index"] %= self._dataset_state[dataset_class]["max_index"]
@@ -95,10 +95,10 @@ class Worker():
                 images.append(img)
                 labels.append(LABEL_MAPPING[img_label])
 
-            image_blob = AugmentatorSeq(images=images)
-            image_blob = np.concatenate(tuple(map(lambda x: np.expand_dims(x, axis=0), image_blob)), axis=0)
+            # image_blob = AugmentatorSeq(images=images)
+            image_blob = np.concatenate(tuple(map(lambda x: np.expand_dims(x, axis=0), images)), axis=0)
             image_blob = image_blob.transpose((0, 3, 1, 2))
-            label_blob = np.array(labels)
+            label_blob = np.expand_dims(np.array(labels), axis=1)
 
             self._queue_put({
                 "img_blob": image_blob,

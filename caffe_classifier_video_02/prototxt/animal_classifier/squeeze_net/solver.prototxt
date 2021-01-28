@@ -15,6 +15,6 @@ average_loss: 40
 display: 40
 max_iter: 15000
 
-snapshot: 1000
+snapshot: 100
 snapshot_prefix: "models/animal_classifier/squeeze_net/squeezenet"
 solver_mode: GPU
