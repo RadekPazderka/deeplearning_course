@@ -5,8 +5,8 @@ layer {
   top: 'data'
   top: 'label'
   python_param {
-    module: 'datalayer_classifier'
-    layer: 'DataLayerClassifier'
+    module: 'layers.datalayer'
+    layer: 'DatalayerClassifier'
   }
 }
 

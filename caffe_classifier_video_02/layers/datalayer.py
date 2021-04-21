@@ -1,5 +1,5 @@
 import caffe
-from ..dataset_fetcher.DataFetcher import DataFetcher
+from caffe_classifier_video_02.dataset_fetcher.DataFetcher import DataFetcher
 
 class DatalayerClassifier(caffe.Layer):
 
@@ -9,7 +9,7 @@ class DatalayerClassifier(caffe.Layer):
         CHANNELS    = 3
         IMG_SIZE    = 227
 
-        self._data_fetcher = DataFetcher("../dataset/data/TRAIN", batch_size=BATCH_SIZE, image_size=IMG_SIZE)
+        self._data_fetcher = DataFetcher("dataset/data/TRAIN", batch_size=BATCH_SIZE, image_size=IMG_SIZE)
         self._data_fetcher.run()
 
         top[0].reshape(BATCH_SIZE, CHANNELS, IMG_SIZE, IMG_SIZE)    # input image
