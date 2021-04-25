@@ -2,6 +2,8 @@ import os
 import zipfile
 import shutil
 
+from tqdm import tqdm
+
 """
 1) Download dataset from "https://www.kaggle.com/alessiocorrado99/animals10/download"
 2) Set DATASET_PATH
@@ -47,6 +49,8 @@ if __name__ == '__main__':
     print("Split dataset into train and val directory...")
     root_dir = os.path.join("tmp", "raw-img")
     for dataset_class_name in os.listdir(root_dir):
+        print("Current class in process: {}".format(dataset_class_name))
+
         dataset_class_dir = os.path.join(root_dir, dataset_class_name)
 
         images_names = os.listdir(dataset_class_dir)
@@ -54,13 +58,13 @@ if __name__ == '__main__':
         train_images = images_names[100:]
 
         output_val_class_dir = create_dir(os.path.join(val_path, translate[dataset_class_name]))
-        for val_image in val_images:
+        for val_image in tqdm(val_images, "prepare val images"):
             source_image_path = os.path.join(dataset_class_dir, val_image)
             dest_image_path = os.path.join(output_val_class_dir, val_image)
             os.rename(source_image_path, dest_image_path)
 
         output_train_class_dir = create_dir(os.path.join(train_path, translate[dataset_class_name]))
-        for train_image in train_images:
+        for train_image in tqdm(train_images, "prepare train images"):
             source_image_path = os.path.join(dataset_class_dir, train_image)
             dest_image_path = os.path.join(output_train_class_dir, train_image)
             os.rename(source_image_path, dest_image_path)
