@@ -33,9 +33,6 @@ class AnimalTrainer(object):
             transforms.ToTensor(),
         ])
 
-    def get_lr(self, optimizer):
-        for param_group in optimizer.state_dict()["param_groups"]:
-            return param_group['lr']
 
     def train(self) -> None:
         vgg16 = self._get_vgg_model(self._pretrained_checkpoint)
@@ -44,11 +41,9 @@ class AnimalTrainer(object):
         train_data = dsets.ImageFolder(self._dataset_train_dir, self._transform)
         train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=self.BATCH_SIZE, shuffle=True)
 
-        # Loss, Optimizer & Scheduler
+        # Loss, Optimizer
         cost = tnn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(vgg16.parameters(), lr=self.LEARNING_RATE)
-        # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
-        #scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1000, 0.8)
 
         # Train the model
         for epoch in range(self.EPOCH):
@@ -72,7 +67,6 @@ class AnimalTrainer(object):
                                                                                           self._best_validitation_score))
                 loss.backward()
                 optimizer.step()
-                # scheduler.step()
 
             checkpoint_path = self._save_checkpoint(epoch, vgg16)
             self._validate_checkpoint(checkpoint_path)
@@ -82,13 +76,13 @@ class AnimalTrainer(object):
         checkpoint_name = "vgg16_{:04}.pkl".format(epoch)
         checkpoint_path = os.path.join(self._checkpoint_dir, checkpoint_name)
         torch.save(model, checkpoint_path)
-
         return checkpoint_path
 
 
     def _get_vgg_model(self, pretrained_checkpoint: Optional[str]=None) -> VGG16:
-        vgg16 = VGG16(10)
-        if (pretrained_checkpoint is not None):
+        if (pretrained_checkpoint is None):
+            vgg16 = VGG16(10)
+        else:
             print("[INFO] Loading pretrained weights. ({})".format(pretrained_checkpoint))
             vgg16 = torch.load(pretrained_checkpoint)
         return vgg16
