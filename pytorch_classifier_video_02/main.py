@@ -23,4 +23,4 @@ if __name__ == '__main__':
     animal_trainer = AnimalTrainer(args.train_dir, args.val_dir, args.checkpoint_dir)
 
     animal_trainer.train()
-    #animal_trainer.validate()
+    animal_trainer.validate()
