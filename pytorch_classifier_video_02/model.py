@@ -24,7 +24,7 @@ def vgg_fc_layer(size_in, size_out):
     return layer
 
 
-class Flatten(nn.Module):
+class MyFlatten(nn.Module):
     def forward(self, input):
         return input.view(input.size(0), -1)
 
@@ -54,7 +54,7 @@ class VGG16(tnn.Module):
 
         self._classifier_block = tnn.Sequential(self.layer6, self.layer7, self.layer8)
 
-        self._net = tnn.Sequential(self._feature_extractor, Flatten, self._classifier_block)
+        self._net = tnn.Sequential(self._feature_extractor, MyFlatten(), self._classifier_block)
 
 
     def forward(self, x):
