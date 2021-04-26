@@ -96,8 +96,8 @@ class AnimalTrainer(object):
 
 
 if __name__ == '__main__':
-    TRAIN_DIR = r'../caffe_classifier_video_02/dataset/data/TRAIN'
-    VAL_DIR = r'../caffe_classifier_video_02/dataset/data/VAL'
+    TRAIN_DIR = r'/data_slow/course/dataset/TRAIN'
+    VAL_DIR = r'/data_slow/course/dataset/VAL'
     CHECKPOINT_DIR = "checkpoints/"
     print(torch.device("cpu"))
     AnimalTrainer(TRAIN_DIR, TRAIN_DIR, CHECKPOINT_DIR).train()
