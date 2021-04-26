@@ -59,7 +59,7 @@ class AnimalTrainer(object):
                 loss.backward()
                 optimizer.step()
 
-            scheduler.step(epoch)
+                scheduler.step(epoch)
 
 
             checkpoint_path = self._save_checkpoint(epoch)
