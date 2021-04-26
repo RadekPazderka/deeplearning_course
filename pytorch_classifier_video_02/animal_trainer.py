@@ -38,7 +38,7 @@ class AnimalTrainer(object):
             return param_group['lr']
 
     def train(self) -> None:
-        vgg16 = self._get_vgg_model()
+        vgg16 = self._get_vgg_model(self._pretrained_checkpoint)
         vgg16.cuda()
 
         train_data = dsets.ImageFolder(self._dataset_train_dir, self._transform)
