@@ -52,6 +52,7 @@ class AnimalTrainer(object):
                 optimizer.zero_grad()
                 _, outputs = self._vgg16(images)
                 loss = cost(outputs, labels)
+                print(labels)
                 avg_loss += loss.data
                 cnt += 1
                 print("[E: {}] loss: {}, avg_loss: {}, best checkpoint: {} ({} %)".format(
