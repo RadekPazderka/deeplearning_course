@@ -37,8 +37,8 @@ class AnimalTrainer(object):
         # Loss, Optimizer & Scheduler
         cost = tnn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(self._vgg16.parameters(), lr=self.LEARNING_RATE)
-        scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
-
+        # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
+        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1000, 0.8)
         # Train the model
         for epoch in range(self.EPOCH):
 
@@ -52,15 +52,16 @@ class AnimalTrainer(object):
                 optimizer.zero_grad()
                 _, outputs = self._vgg16(images)
                 loss = cost(outputs, labels)
-                print(labels)
                 avg_loss += loss.data
                 cnt += 1
-                print("[E: {}] loss: {}, avg_loss: {}, best checkpoint: {} ({} %)".format(
-                    epoch, loss.data, avg_loss / cnt, os.path.basename(self._best_checkpoint), self._best_validitation_score ))
+                print("[E: {}] loss: {}, avg_loss: {}, LR: {}, best checkpoint: {} ({} %)".format(
+                    epoch, loss.data, avg_loss / cnt, scheduler.get_lr(), os.path.basename(self._best_checkpoint), self._best_validitation_score ))
                 loss.backward()
                 optimizer.step()
 
-            scheduler.step(avg_loss)
+            scheduler.step(epoch)
+
+
             checkpoint_path = self._save_checkpoint(epoch)
             #self._validate_checkpoint(checkpoint_path)
 
