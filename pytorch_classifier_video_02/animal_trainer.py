@@ -65,8 +65,8 @@ class AnimalTrainer(object):
                 loss = cost(outputs, labels)
                 avg_loss += loss.data
                 cnt += 1
-                print("[E: {}] loss: {}, avg_loss: {}, LR: {}, best checkpoint: {} ({} %)".format(
-                    epoch, loss.data, avg_loss / cnt, scheduler.get_lr(), os.path.basename(self._best_checkpoint), self._best_validitation_score ))
+                print("[E: {}] loss: {}, avg_loss: {}, LR: {} ({}), best checkpoint: {} ({} %)".format(
+                    epoch, loss.data, avg_loss / cnt, scheduler.get_lr(), self.get_lr(optimizer), os.path.basename(self._best_checkpoint), self._best_validitation_score ))
                 loss.backward()
                 optimizer.step()
                 # scheduler.step()
