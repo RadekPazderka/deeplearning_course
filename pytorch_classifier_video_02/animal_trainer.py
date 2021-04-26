@@ -88,6 +88,7 @@ class AnimalTrainer(object):
 
     def _validate_checkpoint(self, checkpoint_path: str) -> None:
         vgg16 = self._get_vgg_model(checkpoint_path)
+        vgg16.cuda()
         vgg16.eval()
 
         correct = 0
