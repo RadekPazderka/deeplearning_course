@@ -20,7 +20,7 @@ class AnimalTrainer(object):
         self._checkpoint_dir = checkpoint_dir
 
         self._vgg16 = VGG16(n_classes=10)
-        # self._vgg16.cuda()
+        self._vgg16.cuda()
 
         self._transform = transforms.Compose([
             transforms.RandomResizedCrop(224),
@@ -43,8 +43,8 @@ class AnimalTrainer(object):
             avg_loss = 0
             cnt = 0
             for images, labels in tqdm(train_loader, desc="Epoch: {}".format(epoch)):
-                # images = images.cuda()
-                # labels = labels.cuda()
+                images = images.cuda()
+                labels = labels.cuda()
 
                 # Forward + Backward + Optimize
                 optimizer.zero_grad()
@@ -85,7 +85,7 @@ class AnimalTrainer(object):
                 testLoader = torch.utils.data.DataLoader(dataset=testData, batch_size=self.BATCH_SIZE, shuffle=False)
 
                 for images, labels in tqdm(testLoader):
-                    # images = images.cuda()
+                    images = images.cuda()
                     _, outputs = self._vgg16(images)
                     _, predicted = torch.max(outputs.data, 1)
                     total += labels.size(0)
