@@ -15,14 +15,14 @@ def parse_args():
     return args
 
 if __name__ == '__main__':
-    TRAIN_DIR = r'C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\TRAIN'
-    VAL_DIR = r'C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\TRAIN'
-    CHECKPOINT_DIR = "checkpoints/"
-    # args = parse_args()
+    # TRAIN_DIR = r'C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\TRAIN'
+    # VAL_DIR = r'C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\TRAIN'
+    # CHECKPOINT_DIR = "checkpoints/"
+    args = parse_args()
 
 
-    # animal_trainer = AnimalTrainer(args.train_dir, args.val_dir, args.checkpoint_dir, args.pretrained_model)
-    animal_trainer = AnimalTrainer(TRAIN_DIR, VAL_DIR, CHECKPOINT_DIR)
+    animal_trainer = AnimalTrainer(args.train_dir, args.val_dir, args.checkpoint_dir, args.pretrained_model)
+    # animal_trainer = AnimalTrainer(TRAIN_DIR, VAL_DIR, CHECKPOINT_DIR)
 
     animal_trainer.train()
     animal_trainer.validate()
