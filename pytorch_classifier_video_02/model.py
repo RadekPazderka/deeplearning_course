@@ -42,6 +42,11 @@ class VGG16(tnn.Module):
         # Final layer
         self.layer8 = tnn.Linear(4096, n_classes)
 
+        self._net = tnn.Sequential(self.layer1, self.layer2,
+                                   self.layer3, self.layer4,
+                                   self.layer5, self.layer6,
+                                   self.layer7, self.layer8) # only for graph view
+
     def forward(self, x):
         out = self.layer1(x)
         out = self.layer2(out)
