@@ -107,7 +107,7 @@ class AnimalTrainer(object):
             total += labels.size(0)
             correct += (predicted.cpu() == labels).sum()
 
-        avg_acc = (100 * correct / total)
+        avg_acc = (100.0 * float(correct) / float(total))
         if avg_acc > self._best_validitation_score:
             self._best_validitation_score = avg_acc
             self._best_checkpoint = checkpoint_path

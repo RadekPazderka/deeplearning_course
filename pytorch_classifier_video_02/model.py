@@ -1,12 +1,4 @@
-import torch
 import torch.nn as tnn
-import torchvision.datasets as dsets
-import torchvision.transforms as transforms
-
-BATCH_SIZE = 10
-LEARNING_RATE = 0.01
-EPOCH = 50
-N_CLASSES = 10
 
 
 def conv_layer(chann_in, chann_out, k_size, p_size):
@@ -16,7 +8,6 @@ def conv_layer(chann_in, chann_out, k_size, p_size):
         tnn.ReLU()
     )
     return layer
-
 
 def vgg_conv_block(in_list, out_list, k_list, p_list, pooling_k, pooling_s):
     layers = [conv_layer(in_list[i], out_list[i], k_list[i], p_list[i]) for i in range(len(in_list))]
