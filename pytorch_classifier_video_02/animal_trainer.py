@@ -33,6 +33,10 @@ class AnimalTrainer(object):
             transforms.ToTensor(),
         ])
 
+    def get_lr(self, optimizer):
+        for param_group in optimizer.state_dict()["param_groups"]:
+            return param_group['lr']
+
     def train(self) -> None:
         vgg16 = self._get_vgg_model()
         vgg16.cuda()
@@ -44,7 +48,7 @@ class AnimalTrainer(object):
         cost = tnn.CrossEntropyLoss()
         optimizer = torch.optim.Adam(vgg16.parameters(), lr=self.LEARNING_RATE)
         # scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimizer)
-        scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1000, 0.8)
+        # scheduler = torch.optim.lr_scheduler.StepLR(optimizer, 1000, 0.8)
 
         # Train the model
         for epoch in range(self.EPOCH):
@@ -62,11 +66,10 @@ class AnimalTrainer(object):
                 avg_loss += loss.data
                 cnt += 1
                 print("[E: {}] loss: {}, avg_loss: {}, LR: {}, best checkpoint: {} ({} %)".format(
-                    epoch, loss.data, avg_loss / cnt, scheduler.get_lr(), os.path.basename(self._best_checkpoint), self._best_validitation_score ))
+                    epoch, loss.data, avg_loss / cnt, self.get_lr(optimizer), os.path.basename(self._best_checkpoint), self._best_validitation_score ))
                 loss.backward()
                 optimizer.step()
-
-                scheduler.step()
+                # scheduler.step()
 
             checkpoint_path = self._save_checkpoint(epoch, vgg16)
             self._validate_checkpoint(checkpoint_path)
@@ -82,6 +85,7 @@ class AnimalTrainer(object):
     def _get_vgg_model(self, pretrained_checkpoint: Optional[str]=None) -> VGG16:
         vgg16 = VGG16(10)
         if (pretrained_checkpoint is not None):
+            print("[INFO] Loading pretrained weights. ({})".format(pretrained_checkpoint))
             vgg16.load_state_dict(torch.load(pretrained_checkpoint))
         return vgg16
 
