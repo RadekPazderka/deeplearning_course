@@ -94,11 +94,3 @@ class AnimalTrainer(object):
                 avg_acc =  (100 * correct / total)
                 print("{} = avg acc: {}, correct: {}, total: {}".format(file_name, avg_acc, correct, total))
 
-
-if __name__ == '__main__':
-    TRAIN_DIR = r'/data_slow/course/dataset/TRAIN'
-    VAL_DIR = r'/data_slow/course/dataset/VAL'
-    CHECKPOINT_DIR = "checkpoints/"
-    print(torch.device("cpu"))
-    AnimalTrainer(TRAIN_DIR, TRAIN_DIR, CHECKPOINT_DIR).train()
-    # AnimalTrainer(TRAIN_DIR, TRAIN_DIR, CHECKPOINT_DIR).validate()
