@@ -106,7 +106,7 @@ class AnimalTrainer(object):
 
         for images, labels in tqdm(testLoader):
             images = images.cuda()
-            _, outputs = vgg16(images)
+            outputs = vgg16(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)
             correct += (predicted.cpu() == labels).sum()
