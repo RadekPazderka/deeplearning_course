@@ -54,14 +54,14 @@ class AnimalTrainer(object):
                 loss = cost(outputs, labels)
                 avg_loss += loss.data
                 cnt += 1
-                print("[E: {}] loss: {}, avg_loss: {}, best checkpoint: {} ({})".format(
+                print("[E: {}] loss: {}, avg_loss: {}, best checkpoint: {} ({} %)".format(
                     epoch, loss.data, avg_loss / cnt, os.path.basename(self._best_checkpoint), self._best_validitation_score ))
                 loss.backward()
                 optimizer.step()
 
             scheduler.step(avg_loss)
             checkpoint_path = self._save_checkpoint(epoch)
-            self._validate_checkpoint(checkpoint_path)
+            #self._validate_checkpoint(checkpoint_path)
 
 
     def _save_checkpoint(self, epoch: int) -> str:
