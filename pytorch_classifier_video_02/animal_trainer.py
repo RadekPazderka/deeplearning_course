@@ -61,7 +61,7 @@ class AnimalTrainer(object):
 
                 # Forward + Backward + Optimize
                 optimizer.zero_grad()
-                _, outputs = vgg16(images)
+                outputs = vgg16(images)
                 loss = cost(outputs, labels)
                 avg_loss += loss.data
                 cnt += 1

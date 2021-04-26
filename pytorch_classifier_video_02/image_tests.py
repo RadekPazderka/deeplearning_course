@@ -37,7 +37,7 @@ class AnimalTester(object):
         batch = transformed.unsqueeze(0)
 
         with torch.no_grad():
-            _, outputs = self._vgg16(batch)
+            outputs = self._vgg16(batch)
             _, predicted = torch.max(outputs.data, 1)
 
             class_id = predicted.numpy()[0]
