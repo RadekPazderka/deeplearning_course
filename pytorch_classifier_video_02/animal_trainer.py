@@ -78,7 +78,8 @@ class AnimalTrainer(object):
     def _save_checkpoint(self, epoch: int, model: VGG16) -> str:
         checkpoint_name = "vgg16_{:04}.pkl".format(epoch)
         checkpoint_path = os.path.join(self._checkpoint_dir, checkpoint_name)
-        torch.save(model.state_dict(), checkpoint_path)
+        torch.save(model, checkpoint_path)
+
         return checkpoint_path
 
 

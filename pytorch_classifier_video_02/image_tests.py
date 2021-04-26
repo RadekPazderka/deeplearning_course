@@ -1,6 +1,7 @@
 import os
 
 import torch
+from torch import nn
 from torchvision import transforms
 
 from  PIL import Image
@@ -29,7 +30,6 @@ class AnimalTester(object):
             image_path = os.path.join(image_dir_path, image_name)
             self.test_image(image_path)
 
-
     def test_image(self, image_path: str):
         pil_img = Image.open(image_path)
 
@@ -37,14 +37,17 @@ class AnimalTester(object):
         batch = transformed.unsqueeze(0)
 
         with torch.no_grad():
-
             _, outputs = self._vgg16(batch)
             _, predicted = torch.max(outputs.data, 1)
+
             class_id = predicted.numpy()[0]
-            print(DATASET_ID_MAPPING[class_id])
+            m = nn.Softmax(dim=1)
+            percent = m(outputs).numpy().squeeze()[class_id]
+            print("{}: {}".format(DATASET_ID_MAPPING[class_id], percent))
+
 
 if __name__ == '__main__':
-    CHECKPOINT_PATH = r"C:\Users\darkwolf\PycharmProjects\deeplearning_course\pytorch_classifier_video_02\checkpoints\vgg16_0009.pkl"
+    CHECKPOINT_PATH = r"C:\Users\darkwolf\PycharmProjects\deeplearning_course\pytorch_classifier_video_02\checkpoints\vgg16_pretrained.pkl"
     IMAGE_PATH = r"C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\VAL\cat"
 
     animal_tester = AnimalTester(CHECKPOINT_PATH)
