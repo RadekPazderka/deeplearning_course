@@ -7,7 +7,10 @@ import torchvision.datasets as dsets
 import torchvision.transforms as transforms
 from tqdm import tqdm
 
-from pytorch_classifier_video_02.model import VGG16
+try:
+    from pytorch_classifier_video_02.model import VGG16
+except:
+    from .model import VGG16
 
 
 class AnimalTrainer(object):
@@ -18,11 +21,13 @@ class AnimalTrainer(object):
     def __init__(self, dataset_train_dir: str,
                  dataset_val_dir: str,
                  checkpoint_dir: str,
-                 pretrained_checkpoint: Optional[str]=None) -> None:
+                 pretrained_checkpoint: Optional[str]=None,
+                 mode: str="GPU") -> None:
         self._dataset_train_dir = dataset_train_dir
         self._dataset_val_dir = dataset_val_dir
         self._checkpoint_dir = checkpoint_dir
         self._pretrained_checkpoint = pretrained_checkpoint
+        self._mode = mode
 
         self._best_validitation_score = 0.0
         self._best_checkpoint = ""
@@ -36,7 +41,8 @@ class AnimalTrainer(object):
 
     def train(self) -> None:
         vgg16 = self._get_vgg_model(self._pretrained_checkpoint)
-        vgg16.cuda()
+        if self._mode == "GPU":
+            vgg16.cuda()
 
         train_data = dsets.ImageFolder(self._dataset_train_dir, self._transform)
         train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=self.BATCH_SIZE, shuffle=True)
@@ -51,8 +57,9 @@ class AnimalTrainer(object):
             avg_loss = 0
             cnt = 0
             for images, labels in tqdm(train_loader, desc="Epoch: {}".format(epoch)):
-                images = images.cuda()
-                labels = labels.cuda()
+                if self._mode == "GPU":
+                    images = images.cuda()
+                    labels = labels.cuda()
 
                 # Forward + Backward + Optimize
                 optimizer.zero_grad()
@@ -99,7 +106,8 @@ class AnimalTrainer(object):
         testLoader = torch.utils.data.DataLoader(dataset=testData, batch_size=self.BATCH_SIZE, shuffle=False)
 
         for images, labels in tqdm(testLoader):
-            images = images.cuda()
+            if self._mode == "GPU":
+                images = images.cuda()
             outputs = vgg16(images)
             _, predicted = torch.max(outputs.data, 1)
             total += labels.size(0)

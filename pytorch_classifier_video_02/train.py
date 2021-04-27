@@ -1,11 +1,12 @@
 
 import argparse
-
-from pytorch_classifier_video_02.animal_trainer import AnimalTrainer
-
+try:
+    from pytorch_classifier_video_02.animal_trainer import AnimalTrainer
+except:
+    from .animal_trainer import AnimalTrainer
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser = argparse.ArgumentParser(description='Train + val VGG model')
     parser.add_argument('--train_dir', dest="train_dir", type=str, required=True, help='Directory of train images.')
     parser.add_argument('--val_dir', dest="val_dir", type=str, required=True, help='Directory of val images.')
     parser.add_argument('--checkpoint_dir', dest="checkpoint_dir", type=str, required=True, help='Directory of model checkpoints.')
@@ -15,14 +16,9 @@ def parse_args():
     return args
 
 if __name__ == '__main__':
-    # # Local tests
-    # TRAIN_DIR = r'C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\TRAIN'
-    # VAL_DIR = r'C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\TRAIN'
-    # CHECKPOINT_DIR = "checkpoints/"
-    # animal_trainer = AnimalTrainer(TRAIN_DIR, VAL_DIR, CHECKPOINT_DIR)
 
     args = parse_args()
     animal_trainer = AnimalTrainer(args.train_dir, args.val_dir, args.checkpoint_dir, args.pretrained_model)
 
-    #animal_trainer.train()
+    animal_trainer.train()
     animal_trainer.validate()

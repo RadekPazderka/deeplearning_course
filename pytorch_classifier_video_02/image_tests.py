@@ -1,21 +1,24 @@
+import argparse
 import os
 
+import cv2
 import torch
 from torch import nn
 from torchvision import transforms
 
 from  PIL import Image
 
-from pytorch_classifier_video_02.label_mapping import DATASET_ID_MAPPING
-from pytorch_classifier_video_02.model import VGG16
+try:
+    from pytorch_classifier_video_02.label_mapping import DATASET_ID_MAPPING
+except:
+    from .label_mapping import DATASET_ID_MAPPING
 
 
 class AnimalTester(object):
 
     def __init__(self, checkpoint_path: str):
         self._checkpoint_path = checkpoint_path
-        self._vgg16 = VGG16(10)
-        self._vgg16.load_state_dict(torch.load(checkpoint_path))
+        self._vgg16 = torch.load(checkpoint_path, map_location=torch.device('cpu'))
         # self._vgg16.cuda()
         self._vgg16.eval()
 
@@ -31,7 +34,8 @@ class AnimalTester(object):
             self.test_image(image_path)
 
     def test_image(self, image_path: str):
-        pil_img = Image.open(image_path)
+        img = cv2.imread(image_path)
+        pil_img = Image.fromarray(img)
 
         transformed = self._transform(pil_img)
         batch = transformed.unsqueeze(0)
@@ -43,13 +47,23 @@ class AnimalTester(object):
             class_id = predicted.numpy()[0]
             m = nn.Softmax(dim=1)
             percent = m(outputs).numpy().squeeze()[class_id]
-            print("{}: {}".format(DATASET_ID_MAPPING[class_id], percent))
+            print("{}: {:.2f} %".format(DATASET_ID_MAPPING[class_id], percent*100.))
+
+        cv2.imshow("view", img)
+        cv2.waitKey()
+
+def parse_args():
+    parser = argparse.ArgumentParser(description='Process some integers.')
+    parser.add_argument('--image_path', dest="image_path", type=str, required=True, help='Path to image.')
+    parser.add_argument('--checkpoint_path', dest="checkpoint_path", type=str, required=True, help='Path to checkpoint.')
+
+    args = parser.parse_args()
+    return args
 
 
 if __name__ == '__main__':
-    CHECKPOINT_PATH = r"C:\Users\darkwolf\PycharmProjects\deeplearning_course\pytorch_classifier_video_02\checkpoints\vgg16_pretrained.pkl"
-    IMAGE_PATH = r"C:\Users\darkwolf\PycharmProjects\deeplearning_course\caffe_classifier_video_02\dataset\data\VAL\cat"
+    args = parse_args()
 
-    animal_tester = AnimalTester(CHECKPOINT_PATH)
-    animal_tester.test_image_dir(IMAGE_PATH)
+    animal_tester = AnimalTester(args.checkpoint_path)
+    animal_tester.test_image(args.image_path)
 

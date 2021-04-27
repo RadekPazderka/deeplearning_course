@@ -38,7 +38,7 @@ def create_dir(path):
     return path
 
 if __name__ == '__main__':
-    DATASET_PATH = "archive.zip"
+    DATASET_PATH = "./archive.zip"
 
     print("Extract archive: {}".format(DATASET_PATH))
     input_zip=zipfile.ZipFile(DATASET_PATH)
