@@ -1,9 +1,6 @@
-import torch
 import argparse
-try:
-    from pytorch_classifier_video_02.animal_trainer import AnimalTrainer
-except:
-    from .animal_trainer import AnimalTrainer
+from pytorch_classifier_video_02.animal_trainer import AnimalTrainer
+
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Train + val VGG model')
@@ -16,9 +13,6 @@ def parse_args():
     return args
 
 if __name__ == '__main__':
-    a = torch.cuda.is_available()
-    # vgg16 = torch.load(r"/data_slow/course/src/deeplearning_course/pytorch_classifier_video_02/checkpoints/vgg16_0048.pkl", map_location=torch.device('cpu'))
-    # torch.save(vgg16.state_dict(), "new_checkpoint.pkl")
     args = parse_args()
     animal_trainer = AnimalTrainer(args.train_dir, args.val_dir, args.checkpoint_dir, args.pretrained_model)
 
