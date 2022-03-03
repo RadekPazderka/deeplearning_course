@@ -1,4 +1,4 @@
-name: pytorch_classifier_2
+name: pytorch_classifier
 channels:
   - pytorch
 dependencies:
