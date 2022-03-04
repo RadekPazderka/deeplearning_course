@@ -66,7 +66,7 @@ class AnimalTrainer(object):
                     cnt += 1
                     loss.backward()
                     optimizer.step()
-                    logger.set_description("[E: {}] loss: {}, avg_loss: {}, best checkpoint: {} ({} %)".format(epoch,
+                    logger.set_description("[E: {}] loss: {:.5f}, avg_loss: {:.5f}, best checkpoint: {} ({} %)".format(epoch,
                                                                                               loss.data,
                                                                                               avg_loss / cnt,
                                                                                               os.path.basename(self._best_checkpoint),

@@ -1,17 +1,12 @@
 import argparse
 import os
-
 import cv2
 import torch
 from torch import nn
 from torchvision import transforms
+from PIL import Image
 
-from  PIL import Image
-
-try:
-    from pytorch_classifier_video_02.label_mapping import DATASET_ID_MAPPING
-except:
-    from .label_mapping import DATASET_ID_MAPPING
+from pytorch_classifier_video_02.label_mapping import DATASET_ID_MAPPING
 
 
 class AnimalTester(object):
@@ -66,4 +61,3 @@ if __name__ == '__main__':
 
     animal_tester = AnimalTester(args.checkpoint_path)
     animal_tester.test_image(args.image_path)
-

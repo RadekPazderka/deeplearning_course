@@ -41,9 +41,9 @@ class VGG16(tnn.Module):
                                            vgg_conv_block([256, 512, 512], [512, 512, 512], [3, 3, 3], [1, 1, 1], 2, 2),
                                            vgg_conv_block([512, 512, 512], [512, 512, 512], [3, 3, 3], [1, 1, 1], 2, 2))
 
-        classifier_block = tnn.Sequential(vgg_fc_layer(7 * 7 * 512, 4096),
-                                          vgg_fc_layer(4096, 4096),
-                                          tnn.Linear(4096, n_classes))
+        classifier_block = tnn.Sequential(vgg_fc_layer(7 * 7 * 512, 1024),
+                                          # vgg_fc_layer(1024, 1024),
+                                          tnn.Linear(1024, n_classes))
 
         self._net = tnn.Sequential(feature_extractor, Flatten(), classifier_block)
 
