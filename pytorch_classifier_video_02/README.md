@@ -8,7 +8,7 @@ Simple pytorch classifier using custom modified VGG16 architecture.
 
 ## Demo
 
-1) Download pretrained model from uloz.to server [here](https://uloz.to/tam/ece5c4e7-8c83-47b9-95c5-f0fe50b26fb5).
+1) Download pretrained model from uloz.to server [here](https://drive.google.com/file/d/1I53jXYnyKcNoQYxXA_cQv1A0pmKFo3v3/view?usp=sharing).
 2) Save it into **./checkpoints** folder.
 3) Run demo:
 ```bash
