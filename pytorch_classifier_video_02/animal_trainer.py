@@ -35,10 +35,12 @@ class AnimalTrainer(object):
         ])
 
     def train(self) -> None:
+        # Load model
         vgg16 = self._get_vgg_model(self._pretrained_checkpoint)
         if self._mode == "GPU":
             vgg16.cuda()
 
+        # Prepare train dataset loader
         train_data = dsets.ImageFolder(self._dataset_train_dir, self._transform)
         train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=self.BATCH_SIZE, shuffle=True)
 
@@ -48,7 +50,6 @@ class AnimalTrainer(object):
 
         # Train the model
         for epoch in range(self.EPOCH):
-
             avg_loss = 0
             cnt = 0
             with tqdm(train_loader, colour='blue') as logger:
